@@ -199,7 +199,7 @@ add the following::
             'tags' => $tags
         ]);
 
-        // Pass variables into the view template context.
+        // Pass variables into the view template context.``
         $this->set([
             'articles' => $articles,
             'tags' => $tags
@@ -381,6 +381,20 @@ We'll also need to update the article view template. In
     <p><?= h($article->body) ?></p>
     // Add the following line
     <p><b>Tags:</b> <?= h($article->tag_string) ?></p>
+
+You should also update the view method to allow retrieving existing tags::
+
+    // src/Controller/ArticlesController.php file
+
+    public function view($slug = null)
+    {
+       // Update retrieving tags with contain()
+       $article = $this->Articles
+            ->findBySlug($slug)
+            ->contain('Tags')
+            ->firstOrFail();
+        $this->set(compact('article'));
+    }
 
 Persisting the Tag String
 -------------------------
